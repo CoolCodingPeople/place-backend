@@ -1,0 +1,27 @@
+package com.nighthawk.spring_portfolio.mvc.schedule;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface ScheduleJpaRepository extends JpaRepository<ScheduleEntity, Long> {
+    // Custom query to retrieve a schedule by its ID
+    Optional<ScheduleEntity> findById(Long id);
+
+    // Custom query to retrieve all schedules
+    List<ScheduleEntity> findAll();
+
+    // Custom query to retrieve schedules by a specific property
+    List<ScheduleEntity> findByProperty(String propertyName);
+
+    // Custom query to search schedules by a keyword
+    @Query("SELECT s FROM ScheduleEntity s WHERE s.propertyName LIKE %:keyword%")
+    List<ScheduleEntity> searchByKeyword(@Param("keyword") String keyword);
+
+    // Custom query to save a schedule
+    @Override
+    <S extends ScheduleEntity> S save(S schedule);
+}
