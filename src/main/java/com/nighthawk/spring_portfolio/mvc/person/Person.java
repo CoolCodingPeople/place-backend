@@ -10,20 +10,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Convert;
-import static jakarta.persistence.FetchType.EAGER;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import static javax.persistence.FetchType.EAGER;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
@@ -44,7 +43,7 @@ The last annotation connect to database
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Convert(attributeName ="person", converter = JsonType.class)
+@TypeDef(name="json", typeClass = JsonType.class)
 public class Person {
 
     // automatic unique identifier for Person record
@@ -70,19 +69,7 @@ public class Person {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
-    // To be implemented
-    @ManyToMany(fetch = EAGER)
-    private Collection<PersonRole> roles = new ArrayList<>();
-
-    /* HashMap is used to store JSON for daily "stats"
-    "stats": {
-        "2022-11-13": {
-            "calories": 2200,
-            "steps": 8000
-        }
-    }
-    */
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Type(type="json")
     @Column(columnDefinition = "jsonb")
     private Map<String,Map<String, Object>> stats = new HashMap<>(); 
     
@@ -120,41 +107,41 @@ public class Person {
         }
 
         Person p2 = new Person();
-        p2.setName("Soham Kamat");
-        p2.setEmail("soham@gmail.com");
-        p2.setPassword("123Soham!");
+        p2.setName("Shreyas Sarurkar");
+        p2.setEmail("shreyas@gmail.com");
+        p2.setPassword("123LexB!");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-02-2006");
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-01-2000");
             p2.setDob(d);
         } catch (Exception e) {
         }
 
         Person p3 = new Person();
-        p3.setName("Aniket Chakradeo");
-        p3.setEmail("aniket@gmail.com");
-        p3.setPassword("123Aniket!");
+        p3.setName("Mati Danish");
+        p3.setEmail("mati@gmail.com");
+        p3.setPassword("123Mati!");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-03-2006");
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("02-02-2000");
             p3.setDob(d);
         } catch (Exception e) {
         }
 
         Person p4 = new Person();
-        p4.setName("Kevin Du");
-        p4.setEmail("kevin@gmail.com");
-        p4.setPassword("123Kevin!");
+        p4.setName("Shivansh Goel");
+        p4.setEmail("shivansh@gmail.com");
+        p4.setPassword("123Shivansh!");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("01-04-2006");
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("03-03-2000");
             p4.setDob(d);
         } catch (Exception e) {
         }
 
         Person p5 = new Person();
-        p5.setName("John Mortensen");
-        p5.setEmail("jm1021@gmail.com");
-        p5.setPassword("123Qwerty!");
+        p5.setName("Akshat Parikh");
+        p5.setEmail("akshat@gmail.com");
+        p5.setPassword("123Akshat!");
         try {
-            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("10-21-1959");
+            Date d = new SimpleDateFormat("MM-dd-yyyy").parse("04-04-2000");
             p5.setDob(d);
         } catch (Exception e) {
         }

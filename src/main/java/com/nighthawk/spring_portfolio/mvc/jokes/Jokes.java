@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Data  // Annotations to simplify writing code (ie constructors, setters)
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class Jokes {
 
     // starting jokes
     public static String[] init() {
-        final String[] jokesArray = {
+        final String[] jokesArray = {   
             "If you give someone a program... you will frustrate them for a day; if you teach them how to program... you will frustrate them for a lifetime.",
             "Q: Why did I divide sin by tan? A: Just cos.",
             "UNIX is basically a simple operating system... but you have to be a genius to understand the simplicity.",
