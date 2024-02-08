@@ -1,24 +1,24 @@
-package com.example.demo;
+// package com.example.demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+// import java.util.List;
 
-@RestController
-@RequestMapping("/messages")
-public class MessageController {
+// @RestController
+// @RequestMapping("/messages")
+// public class MessageController {
 
-    @Autowired
-    private MessageRepository messageRepository;
+//     @Autowired
+//     private MessageRepository messageRepository;
 
-    @GetMapping
-    public List<Message> getAllMessages() {
-        return messageRepository.findAll();
-    }
+//     @GetMapping
+//     public List<Message> getAllMessages() {
+//         return messageRepository.findAll();
+//     }
 
-    @PostMapping
-    public Message createMessage(@RequestBody Message message) {
-        return messageRepository.save(message);
-    }
-}
+//     @PostMapping
+//     public Message createMessage(@RequestBody Message message) {
+//         return messageRepository.save(message);
+//     }
+// }
