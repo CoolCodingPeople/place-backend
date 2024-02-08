@@ -59,6 +59,31 @@ public class Channel {
                 Objects.equals(creator, channel.creator);
     }
 
+    public static Channel[] init() {
+        // basics of class construction
+        Channel c1 = new Channel();
+        c1.setName("test channel");
+        c1.setDesc("bruh why");
+        c1.setCreator("landoooc");
+
+        Channel c2 = new Channel();
+        c2.setName("INDICATORS");
+        c2.setDesc("i luv indicators");
+        c2.setCreator("Mortenses");
+
+    Channel channels[] = {c1, c2};
+    return(channels);
+    }
+    public static void main(String[] args) {
+        // obtain Person from initializer
+        Channel channels[] = init();
+
+        // iterate using "enhanced for loop"
+        for( Channel channel : channels) {
+            System.out.println(channel);  // print object
+        }
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(Id, name, desc, creator);
