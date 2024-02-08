@@ -1,8 +1,8 @@
-package com.nighthawk.spring_portfolio.mvc.profile;
-import java.util.Optional;
+// package com.nighthawk.spring_portfolio.mvc;
+// import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UploadFileRepository extends JpaRepository<UploadFile, Long>{
-    Optional<UploadFile> findByUsername(String username);
-}
+// public interface UploadFileRepository extends JpaRepository<UploadFile, Long>{
+//     Optional<UploadFile> findByUsername(String username);
+// }
