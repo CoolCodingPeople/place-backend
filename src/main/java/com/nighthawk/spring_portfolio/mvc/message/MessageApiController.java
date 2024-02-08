@@ -53,7 +53,7 @@ public class MessageApiController {
         return newMessage;
     }
 
-    @DeleteMapping("/message/{id}")
+    @DeleteMapping("/message/delete/{id}")
     public String deleteMessage(@PathVariable String id) {
         Long messageID = Long.parseLong(id);
         MessageJpaRepository.deleteById(messageID);

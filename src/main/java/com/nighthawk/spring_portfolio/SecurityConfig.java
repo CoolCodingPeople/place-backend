@@ -99,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.addHeaderWriter(
 						new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "DELETE", "HEAD"))
 					.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin",
-				"https://coolcodingpeople.github.io"))
+				"https://coolcodingpeople.github.io", "http://127.0.0.1:4100"))
 				.and()
 				.formLogin()
 				.loginPage("/login")

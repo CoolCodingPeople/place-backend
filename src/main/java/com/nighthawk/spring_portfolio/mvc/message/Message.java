@@ -17,6 +17,7 @@ public class Message {
     private String writer;
 
     private String time;
+    private String channel;
 
 
     public Long getId() {
@@ -51,6 +52,14 @@ public class Message {
         this.time = time; 
     }
 
+    public String getChannel() { 
+        return channel; 
+    }
+
+    public void setChannel(String channel) { 
+        this.channel = channel; 
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,11 +68,12 @@ public class Message {
         return Objects.equals(Id, message.Id) &&
                 Objects.equals(text, message.text) &&
                 Objects.equals(writer, message.writer) &&
-                Objects.equals(time, message.time);
+                Objects.equals(time, message.time) &&
+                Objects.equals(channel, message.channel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, text, writer, time);
+        return Objects.hash(Id, text, writer, channel, time);
     }
 }

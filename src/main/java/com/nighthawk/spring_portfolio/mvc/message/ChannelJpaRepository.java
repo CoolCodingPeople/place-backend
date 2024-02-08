@@ -1,7 +1,7 @@
-package com.nighthawk.spring_portfolio.mvc.message;
+// package com.nighthawk.spring_portfolio.mvc.message;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ChannelJpaRepository extends JpaRepository<Channel, Long> {
+// public interface ChannelJpaRepository extends JpaRepository<Channel, Long> {
     
-}
+// }
