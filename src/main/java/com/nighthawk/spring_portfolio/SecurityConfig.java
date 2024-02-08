@@ -87,6 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/mvc/person/update/**").permitAll()
 				.antMatchers("/api/person/**").permitAll()
 				.antMatchers("/api/network/**").permitAll()
+				.antMatchers("/**").permitAll()
 				.and()
 				// support cors
 				.cors().and()
@@ -99,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.addHeaderWriter(
 						new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "DELETE", "HEAD"))
 					.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin",
-				"https://coolcodingpeople.github.io", "http://127.0.0.1:4100"))
+				"https://coolcodingpeople.github.io/place", "http://127.0.0.1:4100"))
 				.and()
 				.formLogin()
 				.loginPage("/login")
