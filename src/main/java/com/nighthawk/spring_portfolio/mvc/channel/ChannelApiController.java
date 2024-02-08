@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
 public class ChannelApiController {
 
     @Autowired
@@ -35,7 +34,7 @@ public class ChannelApiController {
         return channel.get();
     }
 
-    @PostMapping("/channel/create")
+    @PostMapping("/channel")
     public Channel createChannel(@RequestBody Channel channel) {
         // Get the title and content from the request body
         String desc = channel.getDesc();
@@ -54,7 +53,7 @@ public class ChannelApiController {
         return newChannel;
     }
 
-    @DeleteMapping("/channel/delete/{id}")
+    @DeleteMapping("/channel/{id}")
     public String deleteMessage(@PathVariable String id) {
         Long channelID = Long.parseLong(id);
         ChannelJpaRepository.deleteById(channelID);

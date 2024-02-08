@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
 public class MessageApiController {
 
     @Autowired
@@ -35,7 +34,7 @@ public class MessageApiController {
         return message.get();
     }
 
-    @PostMapping("/message/send")
+    @PostMapping("/message")
     public Message createMessage(@RequestBody Message message) {
         // Get the title and content from the request body
         String text = message.getText();
@@ -56,7 +55,7 @@ public class MessageApiController {
         return newMessage;
     }
 
-    @DeleteMapping("/message/delete/{id}")
+    @DeleteMapping("/message/{id}")
     public String deleteMessage(@PathVariable String id) {
         Long messageID = Long.parseLong(id);
         MessageJpaRepository.deleteById(messageID);
