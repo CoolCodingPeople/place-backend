@@ -45,7 +45,7 @@ public class AIChatbotController {
 
 		// chat gpt required headers
 		Header contentType = new BasicHeader("Content-Type", "application/json");
-		Header auth = new BasicHeader("Authorization", "Bearer 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");
+		Header auth = new BasicHeader("Authorization", "Bearer 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");
 		Header openAiBeta = new BasicHeader("OpenAI-Beta", "assistants=v1");
 
 		// hard coded JSON string for assistance request payload
@@ -109,7 +109,7 @@ public class AIChatbotController {
 		// Create the message. Use the user's query
 		String createMessageUrl = "https://api.openai.com/v1/threads/" + threadId + "/messages";
 		Header contentType = new BasicHeader("Content-Type", "application/json");
-		Header auth = new BasicHeader("Authorization", "Bearer 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");
+		Header auth = new BasicHeader("Authorization", "Bearer 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");
 		Header openAiBeta = new BasicHeader("OpenAI-Beta", "assistants=v1");
 
 		String bodyStr = "{\"role\": \"user\",\"content\": \"" + userQuery + "\"}";
@@ -169,6 +169,7 @@ public class AIChatbotController {
 	    		
 	    			// this contains the chat gpt's response
 	    			chatReponse.append((String)textObj.get("value"));
+	    			break;
 	    		}
 	    	}
 	    }
