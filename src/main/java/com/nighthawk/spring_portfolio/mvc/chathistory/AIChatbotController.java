@@ -1,6 +1,7 @@
-package com.nighthawk.spring_portfolio.controllers;
+package com.nighthawk.spring_portfolio.mvc.chathistory;
 
 import java.io.IOException;
+import java.sql.Date;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -18,6 +19,7 @@ import org.apache.hc.core5.http.message.BasicHeader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/aichatbot")
 public class AIChatbotController {
+	@Autowired
+	ChatJpaRepository chatJpaRepository;
 	
 	private static final String key = "sess-dSJiZ7jXqwrqCWhUoqC056qKVH9LSTU0o3lUPb3n";
 
@@ -92,6 +96,9 @@ public class AIChatbotController {
 		try {
 			// user sends a message that is sent to chat gpt and a response is returned
 			String response = getResponseFromAI(message);
+			Chat chat = new Chat(message, response, new Date(System.currentTimeMillis()), 1l);
+			Chat chatUpdated = chatJpaRepository.save(chat);
+			System.out.println("Chat saved in db: " + chatUpdated.getId());
 			return response;
 		} catch (Exception e) {
 			e.printStackTrace();
