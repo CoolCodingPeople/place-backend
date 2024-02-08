@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:4100")); // Add other allowed origins if
+		// configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:4100")); // Add other allowed origins if
 																						// needed
 		configuration.setAllowedMethods(Arrays.asList( "DELETE", "GET", "POST", "PUT"));
 		configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "x-csrf-token"));
@@ -100,8 +100,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     			.addHeaderWriter(
         			    new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "DELETE", "HEAD"))
 			    // Remove the line below
-			    	.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin",
-			    	"http://127.0.0.1:4100"))
+			    //.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin",
+			    //	"http://127.0.0.1:4100"))
 				.and()
 				.formLogin()
 				.loginPage("/login")
