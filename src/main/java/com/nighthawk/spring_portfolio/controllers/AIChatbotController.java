@@ -5,18 +5,17 @@ import java.io.IOException;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpException;
-import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicHeader;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,7 @@ public class AIChatbotController {
 
 	// create chat GPT assistant id
 	private static String assistantId;
-	
+
 	// create chat GTP thread id
 	private static String threadId;
 
@@ -40,21 +39,21 @@ public class AIChatbotController {
 	static {
 		// create assistant URL
 		String createAssistantUrl = "https://api.openai.com/v1/assistants";
-		
+
 		// create thread URL
 		String createThreadUrl = "https://api.openai.com/v1/threads";
 
 		// chat gpt required headers
 		Header contentType = new BasicHeader("Content-Type", "application/json");
-		Header auth = new BasicHeader("Authorization", "Bearer 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");
+		Header auth = new BasicHeader("Authorization", "Bearer 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");
 		Header openAiBeta = new BasicHeader("OpenAI-Beta", "assistants=v1");
 
 		// hard coded JSON string for assistance request payload
 		// getting errors while JSON parsing, hence hardcoding it for now
 		String aBodyStr = "{\"instructions\": \"You are a personal math tutor. Write and run code to answer math questions.\",\"name\": \"Math Tutor\",\"tools\": [{\"type\": \"code_interpreter\"}],\"model\": \"gpt-3.5-turbo\"}";
-		
+
 		JSONObject aJson;
-		
+
 		// make a post request and get assistant id
 		try {
 			aJson = sendHttpPost(createAssistantUrl, aBodyStr, contentType, auth, openAiBeta);
@@ -64,9 +63,8 @@ public class AIChatbotController {
 			e.printStackTrace();
 		}
 
-		
 		JSONObject tJson;
-		
+
 		// make a post request and get thread id
 		try {
 			// Chat GPT doesn't require a body / payload for thread request
@@ -99,10 +97,10 @@ public class AIChatbotController {
 	}
 
 	/**
-	* Chat GPT API requires creating a message, then calling the run.
-	* The status check must come "complete"
-	* Then the response can be read from the messages and returned to the user
-	*/
+	 * Chat GPT API requires creating a message, then calling the run. The status
+	 * check must come "complete" Then the response can be read from the messages
+	 * and returned to the user
+	 */
 	public String getResponseFromAI(String userQuery) throws Exception {
 
 		System.out.println("Assistant Id: " + assistantId);
@@ -111,10 +109,10 @@ public class AIChatbotController {
 		// Create the message. Use the user's query
 		String createMessageUrl = "https://api.openai.com/v1/threads/" + threadId + "/messages";
 		Header contentType = new BasicHeader("Content-Type", "application/json");
-		Header auth = new BasicHeader("Authorization", "Bearer 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");
+		Header auth = new BasicHeader("Authorization", "Bearer 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");
 		Header openAiBeta = new BasicHeader("OpenAI-Beta", "assistants=v1");
 
-		String bodyStr = "{\"role\": \"user\",\"content\": \""+userQuery+"\"}";
+		String bodyStr = "{\"role\": \"user\",\"content\": \"" + userQuery + "\"}";
 
 		JSONObject message = sendHttpPost(createMessageUrl, bodyStr, contentType, auth, openAiBeta);
 		String messageId = (String) message.get("id");
@@ -126,43 +124,62 @@ public class AIChatbotController {
 
 		JSONObject runObj = sendHttpPost(runThreadUrl, tBodyStr, contentType, auth, openAiBeta);
 		String runId = (String) runObj.get("id");
-		
+
 		// check status
-		String statusCheckUrl = "https://api.openai.com/v1/threads/"+threadId+"/runs/"+runId;
+		String statusCheckUrl = "https://api.openai.com/v1/threads/" + threadId + "/runs/" + runId;
 		JSONObject sObj = sendHttpGet(statusCheckUrl, contentType, auth, openAiBeta);
-		
-		String status = (String)sObj.get("status");
+
+		String status = (String) sObj.get("status");
 		int retry = 0;
-		
+
 		while (!status.equals("completed")) {
-			// wait max 6 seconds for completion
-			if (++retry >= 6) {
+			// wait max 10 seconds for completion
+			if (++retry >= 10) {
 				break;
 			}
-			
+
 			// sleep a second
 			Thread.sleep(1000);
 			sObj = sendHttpGet(statusCheckUrl, contentType, auth, openAiBeta);
-			status = (String)sObj.get("status");
+			status = (String) sObj.get("status");
 		}
-		
+
 		// get response
 		// TODO error handling
-		String getResponseUrl = "https://api.openai.com/v1/threads/"+threadId+"/messages";
-		
+		String getResponseUrl = "https://api.openai.com/v1/threads/" + threadId + "/messages";
+
 		JSONObject rObj = sendHttpGet(getResponseUrl, contentType, auth, openAiBeta);
+
+		// get data array from json
+		JSONArray dataArray = (JSONArray)rObj.get("data");
+
+		// to create the response string
+		StringBuilder chatReponse = new StringBuilder();
 		
-		String response = rObj.toJSONString();
-		System.out.println(response);
-		return response;
-	}
-	public static void main(String[] args) throws Exception {
-		
+	    for (int i = 0; i < dataArray.size(); i++) {
+	    	JSONObject anObj = (JSONObject)dataArray.get(i);
+	    	
+	    	// the role must be assistant to hold the value
+	    	if (anObj.get("role").equals("assistant")) {
+	    		JSONArray contentArray = (JSONArray)anObj.get("content");
+	    		
+	    		for (int j = 0; j < contentArray.size(); j++) {
+	    			JSONObject contentObj = (JSONObject)contentArray.get(j);
+	    			JSONObject textObj = (JSONObject)contentObj.get("text");
+	    		
+	    			// this contains the chat gpt's response
+	    			chatReponse.append((String)textObj.get("value"));
+	    		}
+	    	}
+	    }
+
+	    return chatReponse.toString();
 	}
 
+	// send http post and return JSON response
 	public static JSONObject sendHttpPost(String url, String body, Header... headers) throws Exception {
 		JSONObject json = null;
-		
+
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.setEntity(new StringEntity(body));
@@ -172,10 +189,11 @@ public class AIChatbotController {
 
 		return json;
 	}
-	
+
+	// send http get and return JSON response
 	public static JSONObject sendHttpGet(String url, Header... headers) throws Exception {
 		JSONObject json = null;
-		
+
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.setHeaders(headers);
@@ -183,6 +201,13 @@ public class AIChatbotController {
 		}
 
 		return json;
+	}
+
+	// main method to testing
+	public static void main(String[] args) throws Exception {
+		AIChatbotController ai = new AIChatbotController();
+		String response = ai.getResponseFromAI("Hi");
+		System.out.println(response);
 	}
 }
 
