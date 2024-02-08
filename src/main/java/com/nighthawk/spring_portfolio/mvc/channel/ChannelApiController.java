@@ -34,7 +34,7 @@ public class ChannelApiController {
         return channel.get();
     }
 
-    @PostMapping("/channel")
+    @PostMapping("/channel/create")
     public Channel createChannel(@RequestBody Channel channel) {
         // Get the title and content from the request body
         String desc = channel.getDesc();
