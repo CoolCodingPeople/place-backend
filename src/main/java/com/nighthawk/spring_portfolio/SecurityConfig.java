@@ -91,16 +91,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				// support cors
 				.cors().and()
-				.headers()
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))
-				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Content-Type",
-						"Authorization", "x-csrf-token"))
-				.addHeaderWriter	(new StaticHeadersWriter("Access-Control-Allow-MaxAge", "600"))
-				.addHeaderWriter(
-						new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "DELETE", "HEAD"))
-					//.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin",
-				//"https://coolcodingpeople.github.io/place", "http://127.0.0.1:4100"))
+    			.headers()
+    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))
+    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Content-Type",
+    			        "Authorization", "x-csrf-token"))
+    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-MaxAge", "600"))
+    			.addHeaderWriter(
+        			    new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "DELETE", "HEAD"))
+			    // Remove the line below
+			    // .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin",
+			    //"https://coolcodingpeople.github.io/place", "http://127.0.0.1:4100"))
 				.and()
 				.formLogin()
 				.loginPage("/login")
