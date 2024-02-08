@@ -17,6 +17,7 @@ public class Message {
     private String writer;
 
     private String time;
+    private String channelId;
 
 
     public Long getId() {
@@ -51,6 +52,14 @@ public class Message {
         this.time = time; 
     }
 
+    public String getChannel() { 
+        return channelId; 
+    }
+
+    public void setChannel(String channelId) { 
+        this.channelId = channelId; 
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,11 +68,39 @@ public class Message {
         return Objects.equals(Id, message.Id) &&
                 Objects.equals(text, message.text) &&
                 Objects.equals(writer, message.writer) &&
-                Objects.equals(time, message.time);
+                Objects.equals(time, message.time) &&
+                Objects.equals(channelId, message.channelId);
+    }
+
+    public static Message[] init() {
+        // basics of class construction
+        Message m1 = new Message();
+        m1.setText("this is taking way tooo long");
+        m1.setWriter("landoooc");
+        m1.setTime("12:57");
+        m1.setChannel("1");
+
+        Message m2 = new Message();
+        m2.setText("INDICATORS!!!");
+        m2.setWriter("mr_mort");
+        m2.setTime("01:10");
+        m2.setChannel("1");
+
+    Message messages[] = {m1, m2};
+    return(messages);
+    }
+    public static void main(String[] args) {
+        // obtain Person from initializer
+        Message messages[] = init();
+
+        // iterate using "enhanced for loop"
+        for( Message message : messages) {
+            System.out.println(message);  // print object
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, text, writer, time);
+        return Objects.hash(Id, text, writer, channelId, time);
     }
 }

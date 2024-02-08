@@ -12,6 +12,10 @@ import com.nighthawk.spring_portfolio.mvc.person.Person;
 import com.nighthawk.spring_portfolio.mvc.person.PersonDetailsService;
 import com.nighthawk.spring_portfolio.mvc.note.Note;
 import com.nighthawk.spring_portfolio.mvc.note.NoteJpaRepository;
+import com.nighthawk.spring_portfolio.mvc.message.Message;
+import com.nighthawk.spring_portfolio.mvc.message.MessageJpaRepository;
+import com.nighthawk.spring_portfolio.mvc.channel.Channel;
+import com.nighthawk.spring_portfolio.mvc.channel.ChannelJpaRepository;
 
 import java.util.List;
 
@@ -21,6 +25,8 @@ public class ModelInit {
     @Autowired JokesJpaRepository jokesRepo;
     @Autowired PersonDetailsService personService;
     @Autowired NoteJpaRepository noteRepo;
+    @Autowired MessageJpaRepository messageRepo;
+    @Autowired ChannelJpaRepository channelRepo;
 
     @Bean
     CommandLineRunner run() {  // The run() method will be executed after the application starts
@@ -48,7 +54,6 @@ public class ModelInit {
                     noteRepo.save(n);  // JPA Save                  
                 }
             }
-
         };
     }
 }
