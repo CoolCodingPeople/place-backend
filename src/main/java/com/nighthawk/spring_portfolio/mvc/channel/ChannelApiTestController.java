@@ -1,3 +1,4 @@
+package com.nighthawk.spring_portfolio.mvc.channel;
 // package com.nighthawk.spring_portfolio.mvc.message;
 
 // import org.springframework.beans.factory.annotation.Autowired;

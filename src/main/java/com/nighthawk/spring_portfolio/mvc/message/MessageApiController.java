@@ -24,7 +24,7 @@ public class MessageApiController {
         return message.get();
     }
 
-    @PostMapping("/message/{id}")
+    @PostMapping("/message/update/{id}")
     public Message updateMessage(@PathVariable String id, @RequestBody Message newMessage) {
         Long messageID = Long.parseLong(id);
         Optional<Message> message = MessageJpaRepository.findById(messageID);
@@ -34,17 +34,19 @@ public class MessageApiController {
         return message.get();
     }
 
-    @PostMapping("/message")
+    @PostMapping("/message/send")
     public Message createMessage(@RequestBody Message message) {
         // Get the title and content from the request body
         String text = message.getText();
         String writer = message.getWriter();
         String time = message.getTime();
+        String channelId = message.getChannel();
         // Create a new Post object
         Message newMessage = new Message();
         newMessage.setText(text);
         newMessage.setTime(time); // Set the title
         newMessage.setWriter(writer);
+        newMessage.setChannel(channelId);
         // Set other fields as needed
 
         // Save the new Post
