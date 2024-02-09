@@ -51,9 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		// configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:4100")); // Add other allowed origins if
+		configuration.setAllowedOrigins(Arrays.asList("https://coolcodingpeople.github.io")); // Add other allowed origins if
 																						// needed
-		configuration.setAllowedMethods(Arrays.asList( "DELETE", "GET", "POST", "PUT"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
 		configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "x-csrf-token"));
 		configuration.setAllowCredentials(true); // Allow credentials
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -84,24 +84,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// list the requests/endpoints need to be authenticated
 				.authorizeRequests()
 				// Change "permitAll" to "authenticated" to enable authentication
-				.antMatchers("/mvc/person/update/**").permitAll()
+				.antMatchers("/mvc/person/update/**", "/mvc/person/delete/**").permitAll()
 				.antMatchers("/api/person/**").permitAll()
 				.antMatchers("/api/network/**").permitAll()
-				.antMatchers("/**").permitAll()
 				.and()
 				// support cors
 				.cors().and()
-    			.headers()
-    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
-    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))
-    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Content-Type",
-    			        "Authorization", "x-csrf-token"))
-    			.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-MaxAge", "600"))
-    			.addHeaderWriter(
-        			    new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "DELETE", "HEAD"))
-			    // Remove the line below
-			    //.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin",
-			    //	"http://127.0.0.1:4100"))
+				.headers()
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-ExposedHeaders", "*", "Authorization"))
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers", "Content-Type",
+						"Authorization", "x-csrf-token"))
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-MaxAge", "600"))
+				.addHeaderWriter(
+						new StaticHeadersWriter("Access-Control-Allow-Methods", "POST", "GET", "OPTIONS", "HEAD"))
+				.addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "https://coolcodingpeople.github.io"))
 				.and()
 				.formLogin()
 				.loginPage("/login")
