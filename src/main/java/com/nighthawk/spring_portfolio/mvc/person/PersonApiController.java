@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.text.SimpleDateFormat;
+
 @RestController
 @RequestMapping("/api/person")
 public class PersonApiController {
@@ -21,6 +22,10 @@ public class PersonApiController {
     // Autowired enables Control to connect POJO Object through JPA
     @Autowired
     private PersonJpaRepository repository;
+
+    @Autowired
+    private PersonDetailsService personDetailsService;
+
     /*
     GET List of People
      */
@@ -28,22 +33,12 @@ public class PersonApiController {
     public ResponseEntity<List<Person>> getPeople() {
         return new ResponseEntity<>( repository.findAllByOrderByNameAsc(), HttpStatus.OK);
     }
-    @GetMapping("/username")
-    public ResponseEntity<List<String>> getPeopleUsername() {
-    List<Person> lists = repository.findAllByOrderByNameAsc();
-    List<String> new_list = new ArrayList<>();
 
-    for (int i = 0; i < lists.size(); i++) {
-        new_list.add(lists.get(i).getName());
-    }
-
-    return new ResponseEntity<>(new_list, HttpStatus.OK);
-}
     /*
     GET individual Person using ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Person> getPerson(@PathVariable Long id) {
+    public ResponseEntity<Person> getPerson(@PathVariable long id) {
         Optional<Person> optional = repository.findById(id);
         if (optional.isPresent()) {  // Good ID
             Person person = optional.get();  // value from findByID
@@ -71,21 +66,20 @@ public class PersonApiController {
     /*
     POST Aa record by Requesting Parameters from URI
      */
-    @PostMapping("/post")
-    public ResponseEntity<Object> postPerson(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("dob") String dobString) {
+    @PostMapping( "/post")
+    public ResponseEntity<Object> postPerson(@RequestParam("email") String email,
+                                             @RequestParam("password") String password,
+                                             @RequestParam("name") String name,
+                                             @RequestParam("dob") String dobString) {
         Date dob;
         try {
             dob = new SimpleDateFormat("MM-dd-yyyy").parse(dobString);
         } catch (Exception e) {
             return new ResponseEntity<>(dobString +" error; try MM-dd-yyyy", HttpStatus.BAD_REQUEST);
         }
-        
-        Person person = new Person();
-        person.setEmail(email);
-        person.setPassword(password);
-        person.setName(name);
-        person.setDob(dob);
-        repository.save(person);
+        // A person object WITHOUT ID will create a new record with default roles as student
+        Person person = new Person(email, password, name, dob);
+        personDetailsService.save(person);
         return new ResponseEntity<>(email +" is created successfully", HttpStatus.CREATED);
     }
 
