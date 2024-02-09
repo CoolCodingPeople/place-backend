@@ -2,6 +2,8 @@ package com.nighthawk.spring_portfolio.mvc.chathistory;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 // AI Chat Bot Controller based on Chat GPT 3.5 API
 @RestController
@@ -104,6 +109,36 @@ public class AIChatbotController {
 			e.printStackTrace();
 			return e.getMessage();
 		}
+	}
+	
+	@DeleteMapping("/chat/history/clear")
+	public String clearCharHistory() {
+		List<Chat> 	chats = chatJpaRepository.deleteByPersonId(1l);
+		JSONObject obj = new JSONObject();
+		JSONArray list = new JSONArray();
+       
+		for (Chat c : chats) {
+			System.out.println(c.getId());
+			 list.add(c.toJSON());
+		}
+		
+		obj.put("chats", list);
+		return obj.toJSONString();
+	}
+	
+	@GetMapping("/chat/history")
+	public String getAllChats() {
+		List<Chat> 	chats = chatJpaRepository.findByPersonId(1l);
+		JSONObject obj = new JSONObject();
+		JSONArray list = new JSONArray();
+       
+		for (Chat c : chats) {
+			System.out.println(c.getId());
+			 list.add(c.toJSON());
+		}
+		
+		obj.put("chats", list);
+		return obj.toString();
 	}
 
 	/**
@@ -225,6 +260,7 @@ public class AIChatbotController {
 		String response = ai.getResponseFromAI("Hi");
 		System.out.println(response);
 	}
+	
 }
 
 class JSONResponseHandler implements HttpClientResponseHandler<JSONObject> {

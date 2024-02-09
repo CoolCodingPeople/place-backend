@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.json.simple.JSONObject;
+
 @Entity
 public class Chat {
 	 // automatic unique identifier for Person record
@@ -42,6 +44,39 @@ public class Chat {
 		this.personId = personId;
 	}
     
+	public Chat() {
+		
+	}
     // todo add person id foreign key
+	
+	@Override
+	public String toString() {
+		JSONObject obj = new JSONObject();
+		obj.put(idStr, id);
+		obj.put(chat_message, chatMessage);
+		obj.put(chat_response, chatReponse);
+		obj.put(timestamp_str, timestamp.toString());
+		obj.put(person_id, personId);
+		
+		return obj.toString();
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put(idStr, id);
+		obj.put(chat_message, chatMessage);
+		obj.put(chat_response, chatReponse);
+		obj.put(timestamp_str, timestamp.toString());
+		obj.put(person_id, personId);
+		
+		return obj;
+	}
+	
+	private static final String chat_message="chat_message";
+	private static final String idStr="id";
+	private static final String chat_response="chat_response";
+	private static final String timestamp_str="timestamp";
+	private static final String person_id="person_id";
+	
 
 }
