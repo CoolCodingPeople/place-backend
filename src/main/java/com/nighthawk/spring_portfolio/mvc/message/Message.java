@@ -17,7 +17,7 @@ public class Message {
     private String writer;
 
     private String time;
-    private String channelId;
+    private String channelName;
 
 
     public Long getId() {
@@ -52,12 +52,12 @@ public class Message {
         this.time = time; 
     }
 
-    public String getChannel() { 
-        return channelId; 
+    public String getChannelName() { 
+        return channelName; 
     }
 
-    public void setChannel(String channelId) { 
-        this.channelId = channelId; 
+    public void setChannelName(String channelName) { 
+        this.channelName = channelName; 
     }
 
     @Override
@@ -69,7 +69,7 @@ public class Message {
                 Objects.equals(text, message.text) &&
                 Objects.equals(writer, message.writer) &&
                 Objects.equals(time, message.time) &&
-                Objects.equals(channelId, message.channelId);
+                Objects.equals(channelName, message.channelName);
     }
 
     public static Message[] init() {
@@ -78,13 +78,13 @@ public class Message {
         m1.setText("this is taking way tooo long");
         m1.setWriter("landoooc");
         m1.setTime("12:57");
-        m1.setChannel("1");
+        m1.setChannelName("1");
 
         Message m2 = new Message();
         m2.setText("INDICATORS!!!");
         m2.setWriter("mr_mort");
         m2.setTime("01:10");
-        m2.setChannel("1");
+        m2.setChannelName("1");
 
     Message messages[] = {m1, m2};
     return(messages);
@@ -101,6 +101,6 @@ public class Message {
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, text, writer, channelId, time);
+        return Objects.hash(Id, text, writer, channelName, time);
     }
 }

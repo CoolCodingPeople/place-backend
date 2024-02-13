@@ -40,13 +40,13 @@ public class MessageApiController {
         String text = message.getText();
         String writer = message.getWriter();
         String time = message.getTime();
-        String channelId = message.getChannel();
+        String channelName = message.getChannelName();
         // Create a new Post object
         Message newMessage = new Message();
         newMessage.setText(text);
         newMessage.setTime(time); // Set the title
         newMessage.setWriter(writer);
-        newMessage.setChannel(channelId);
+        newMessage.setChannelName(channelName);
         // Set other fields as needed
 
         // Save the new Post
