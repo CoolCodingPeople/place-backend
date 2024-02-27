@@ -2,7 +2,6 @@ package com.nighthawk.spring_portfolio.mvc.chathistory;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -22,13 +21,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 // AI Chat Bot Controller based on Chat GPT 3.5 API
 @RestController
@@ -127,7 +124,7 @@ public class AIChatbotController {
 	}
 	
 	@GetMapping("/chat/history")
-	public String getAllChats() {
+	public String getAllChatsForUser() {
 		List<Chat> 	chats = chatJpaRepository.findByPersonId(1l);
 		JSONObject obj = new JSONObject();
 		JSONArray list = new JSONArray();
@@ -139,6 +136,42 @@ public class AIChatbotController {
 		
 		obj.put("chats", list);
 		return obj.toString();
+	}
+	
+	@GetMapping("/chat/history/all")
+	// get all chats and return as a two dimensional string array
+	public String[][] getAllChats() {
+		// get all chats
+		List<Chat> 	chats = chatJpaRepository.findAll();
+		// initialize the two dimensional array
+		// array size is same as number of chats in the list above
+		// the other dimension of the two dimensional array is fixed at 4 to hold:
+		// person id; chat message; chat response; and time stamp
+		String[][] allChats = new String[chats.size()][4];
+		
+		// initialize the counter
+		int counter = 0;
+		
+		// iterate over the list of chats
+		for (Chat c : chats) {
+			// retrieve values
+			long personId = c.getPersonId();
+			String chatMsg = c.getChatMessage();
+			String response = c.getChatReponse();
+			Date timeStamp = c.getTimestamp();
+			// set values in the two dimensional array
+			// counter is incremented at the end
+			allChats[counter][0] = String.valueOf(personId);
+			allChats[counter][1] = chatMsg;
+			allChats[counter][2] = response;
+			allChats[counter][3] = timeStamp.toString();
+			
+			// increment counter
+			counter++;
+		}
+		
+		// return the chats for all users
+		return allChats;
 	}
 
 	/**
