@@ -34,13 +34,13 @@ public class AIChatbotController {
 	@Autowired
 	ChatJpaRepository chatJpaRepository;
 	
-	private static final String key = "sess-dSJiZ7jXqwrqCWhUoqC056qKVH9LSTU0o3lUPb3n";
+	private static final String key = "sess-LIx8f9EKlvC4XxAfeeVhgdV2tMn2Ksps1YI20zVL";
 
 	// create chat GPT assistant id
 	private static String assistantId = "asst_8OuJGh5SmCLAhKpRhdYuYgmQ";
 
 	// create chat GTP thread id
-	private static String threadId  = "thread_3KhrX2pFMUB059ox4YNIfQuI";
+	private static String threadId  = "thread_15jXCg2zNHIQgmgwYBItZGYq";
 
 	// create the assistant and thread once the controller loads
 	// need to test if this needs to be refreshed after a while
